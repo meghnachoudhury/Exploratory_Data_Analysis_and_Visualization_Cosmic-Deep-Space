@@ -1,1 +1,24 @@
 # Introduction
+I chose this project because I have always been fascinated with how we have advanced as a civilization to a point where we can peer deep into the universe, beyond our small planet, and learn about elements beyond us. For that purpose, the James Webb Space Telescope, which is the largest telescope in space and  was launched quite recently on December 25, 2021, conducts infrared astronomy and the data we receive as result helps us perform all kinds of analysis of the deep space. It has a very high resolution and sensitivity, and can capture objects that are too old, far away, or barely visible for the Hubble Telescope. This project aims to analyze the data from JWST photometric catalogs in NASA's public archives, visually explore the change and uncertainties in observed brightness/colors of a galaxy with cosmic time, and to capture patterns based on data parameters like depth, missing values, spatial non-uniformity, for distinguishing real trends from surveys. I will test the completeness of JWST data as well in this experiment. For some context, here are some straightforward theories in astrophysics that I will be using to frame my project goals:
+
+1. Distance equals time (visually).
+
+2. Big bang predicts a consistent trend between distance and time, and we know that the cosmic speed limit is the speed of light.
+
+3. As light travels through the expanding space, its wavelength is stretched to longer frequencies. This phenomenon is called a cosmological redshift.
+
+4. The amount of "stretch" tells us how long ago light was emitted. (Note: Let us treat redshift as a time coordinate.)
+
+   Mathematically, this can be calculated in an isotropic Friedman-Lemaître-Robertson-Walker universe as a(t0)/a(temit), where a(t) is the scale factor, and t0 and temit are     the light parameters for emitted and observed light, respectively.
+
+But, I will not focus on the mathematics, but rather the analysis and visualization of a cluster of galaxies. I want to show the light and time comparison of some of the data zones in the observable deep space, and try to visually capture the patterns. 
+
+Based on the above root theories, I will aim to answer the following questions:
+
+1. Does observed brightness change with time? Change of median apparent with redshift.
+
+2. Do galaxies evolve with time? Or is there a survey bias in the JWST dataset?
+
+3. Is there spatial non-uniformity that confirms survey quirks?
+
+4. Can color and size parameters tell stars apart from galaxies?

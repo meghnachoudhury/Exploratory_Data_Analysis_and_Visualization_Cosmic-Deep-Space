@@ -6,11 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="AUTHOR1 (UNI1)">
-<meta name="author" content="AUTHOR2 (UNI2)">
-<meta name="dcterms.date" content="2025-10-17">
+<meta name="author" content="MEGHNA CHOUDHURY (MC5866)">
+<meta name="dcterms.date" content="2025-12-11">
 
-<title>YOUR PROJECT TITLE</title>
+<title>Exploratory Data Analysis and Visualization of JWST Photometric Data in the Cosmic Deep Space</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -99,9 +98,9 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">YOUR PROJECT TITLE</a> 
+      <a href="./">Exploratory Data Analysis and Visualization of JWST Photometric Data in the Cosmic Deep Space</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
     </div>
       </div>
@@ -148,14 +147,14 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">YOUR PROJECT TITLE</h1>
+<h1 class="title">Exploratory Data Analysis and Visualization of JWST Photometric Data in the Cosmic Deep Space</h1>
 </div>
 
 
@@ -163,17 +162,16 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>AUTHOR1 (UNI1) </p>
-             <p>AUTHOR2 (UNI2) </p>
+             <p>MEGHNA CHOUDHURY (MC5866) </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 17, 2025</p>
+      <p class="date">December 11, 2025</p>
     </div>
   </div>
   
@@ -187,6 +185,22 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>I chose this project because I have always been fascinated with how we have advanced as a civilization to a point where we can peer deep into the universe, beyond our small planet, and learn about elements beyond us. For that purpose, the James Webb Space Telescope, which is the largest telescope in space and was launched quite recently on December 25, 2021, conducts infrared astronomy and the data we receive as result helps us perform all kinds of analysis of the deep space. It has a very high resolution and sensitivity, and can capture objects that are too old, far away, or barely visible for the Hubble Telescope. This project aims to analyze the data from JWST photometric catalogs in NASA’s public archives, visually explore the change and uncertainties in observed brightness/colors of a galaxy with cosmic time, and to capture patterns based on data parameters like depth, missing values, spatial non-uniformity, for distinguishing real trends from surveys. I will test the completeness of JWST data as well in this experiment. For some context, here are some straightforward theories in astrophysics that I will be using to frame my project goals:</p>
+<ol type="1">
+<li><p>Distance equals time (visually).</p></li>
+<li><p>Big bang predicts a consistent trend between distance and time, and we know that the cosmic speed limit is the speed of light.</p></li>
+<li><p>As light travels through the expanding space, its wavelength is stretched to longer frequencies. This phenomenon is called a cosmological redshift.</p></li>
+<li><p>The amount of “stretch” tells us how long ago light was emitted. (Note: Let us treat redshift as a time coordinate.)</p>
+<p>Mathematically, this can be calculated in an isotropic Friedman-Lemaître-Robertson-Walker universe as a(t0)/a(temit), where a(t) is the scale factor, and t0 and temit are the light parameters for emitted and observed light, respectively.</p></li>
+</ol>
+<p>But, I will not focus on the mathematics, but rather the analysis and visualization of a cluster of galaxies. I want to show the light and time comparison of some of the data zones in the observable deep space, and try to visually capture the patterns.</p>
+<p>Based on the above root theories, I will aim to answer the following questions:</p>
+<ol type="1">
+<li><p>Does observed brightness change with time? Change of median apparent with redshift.</p></li>
+<li><p>Do galaxies evolve with time? Or is there a survey bias in the JWST dataset?</p></li>
+<li><p>Is there spatial non-uniformity that confirms survey quirks?</p></li>
+<li><p>Can color and size parameters tell stars apart from galaxies?</p></li>
+</ol>
 
 
 </section>
@@ -608,7 +622,7 @@ ul.task-list li input[type="checkbox"] {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

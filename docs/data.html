@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Data – YOUR PROJECT TITLE</title>
+<title>2&nbsp; Data – Exploratory Data Analysis and Visualization of JWST Photometric Data in the Cosmic Deep Space</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -97,9 +132,9 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">YOUR PROJECT TITLE</a> 
+      <a href="./">Exploratory Data Analysis and Visualization of JWST Photometric Data in the Cosmic Deep Space</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
     </div>
       </div>
@@ -147,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
   <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -173,9 +208,392 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hexbin)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hexbin)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>I used a public data catalog called the UNCOVER DR3 SUPER which is used to describe the Abell 2744 field. It is collected by the UNCOVER collaboration using James Webb Space Telescope. I have tried to understand the data with some question prompts:</p>
+<ol type="1">
+<li><p>What is the data about? The Abell 2744 field is a huge galaxy cluster in the Sculptor Constellation known as the Pandora’s Cluster. DR3 Photometry has over 74000 sources that are publicly archived, and measures different sky positions or brightness(RA, Dec), redshifts (spectroscopic z_spec, photometric estimates with uncertainties like z025/z975 and fit quality z_phot_chi2), fluxes (f_ variables), errors (e_ variables), and AB magnitudes (m_ variables) across various filters. It combines NIRCam mosaics with point-spread-function-matched apertures. A PSF( Point Spread Function) is a 2D distribution of light in a telescopic focal plane. The data catalog is released as a FITS (binary table) and a mirrored CSV/ECSV, which I downloaded from the UNCOVER github repo. I will use the CSV for the EDAV implementation.</p></li>
+<li><p>Why does it exist? We want a measurement (PSF-matched, multi-filter comparison) of sources so that we can study galaxies.</p></li>
+<li><p>What are we using the data for? To observe age through trends of brightness vs redshift, evolution of galaxies, the treatment of missing data, spatial non-uniformity, and a categorization of stars vs non stars.</p></li>
+</ol>
+<p>Challenges with Missing values- In real world, the problems encountered with this kind of data is that some objects are too faint in some filters (brightness undetected), and there is a lot of measurement uncertainty, so they end up as missing values. Also at very high redshifts, certain filters drop because even in JWST, they don’t capture light from very old galaxies.</p>
+<p>The significant variables in this data:</p>
+<ol type="1">
+<li><p>Position in the sky- ra, dec</p></li>
+<li><p>Redshift and Uncertainty- spectroscopic redshift (z_spec), Uncertainty width (z025, z975), photo z fit check (z_phot_chi2),Derived redshift bins (z_bin).</p></li>
+<li><p>Filters - f variables</p></li>
+<li><p>Errors- e variables</p></li>
+<li><p>Magnitude (AB) - m variables.</p></li>
+</ol>
+<p>In the below plots I will analyze the most optimal filters for observing by comparing different filters with different sets of missing data.</p>
 </section>
 <section id="missing-value-analysis" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>csv_path <span class="ot">&lt;-</span> <span class="st">"/Users/base/Desktop/Columbia Documents/Courswork/EDAV/Project/uncover_dr3_super_catalog.csv"</span>  </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>gal_raw  <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(csv_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gal_raw, <span class="at">width =</span> <span class="dv">120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 156
+     id     x     y    ra   dec ebv_mw `faper_f277w+f356w+f444w`
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;                     &lt;dbl&gt;
+1     1 4170. 0.804  3.62 -30.5 0.0107                        NA
+2     2 4191. 2.50   3.62 -30.5 0.0107                        NA
+3     3 5174. 1.55   3.61 -30.5 0.0109                        NA
+4     4 5250. 2.68   3.61 -30.5 0.0109                        NA
+5     5 3820. 1.53   3.63 -30.5 0.0107                        NA
+6     6 4862. 2.49   3.62 -30.5 0.0109                        NA
+# ℹ 149 more variables: `eaper_f277w+f356w+f444w` &lt;dbl&gt;,
+#   `fauto_f277w+f356w+f444w` &lt;dbl&gt;, `w_f277w+f356w+f444w` &lt;dbl&gt;,
+#   f_f435w &lt;dbl&gt;, e_f435w &lt;dbl&gt;, w_f435w &lt;dbl&gt;, f_f606w &lt;dbl&gt;, e_f606w &lt;dbl&gt;,
+#   w_f606w &lt;dbl&gt;, f_f814w &lt;dbl&gt;, e_f814w &lt;dbl&gt;, w_f814w &lt;dbl&gt;, f_f070w &lt;dbl&gt;,
+#   e_f070w &lt;dbl&gt;, w_f070w &lt;dbl&gt;, f_f090w &lt;dbl&gt;, e_f090w &lt;dbl&gt;, w_f090w &lt;dbl&gt;,
+#   f_f105w &lt;dbl&gt;, e_f105w &lt;dbl&gt;, w_f105w &lt;dbl&gt;, f_f115w &lt;dbl&gt;, e_f115w &lt;dbl&gt;,
+#   w_f115w &lt;dbl&gt;, f_f125w &lt;dbl&gt;, e_f125w &lt;dbl&gt;, w_f125w &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>z_candidates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"z"</span>, <span class="st">"z_phot"</span>, <span class="st">"z_best"</span>, <span class="st">"z_eazy"</span>, <span class="st">"photoz"</span>, <span class="st">"z_spec"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>z_col <span class="ot">&lt;-</span> <span class="fu">intersect</span>(z_candidates, <span class="fu">names</span>(gal_raw))[<span class="dv">1</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.na</span>(z_col)) <span class="fu">stop</span>(<span class="st">"No redshift column found. Look for one of: "</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">paste</span>(z_candidates, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Using redshift column: "</span>, z_col)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>gal <span class="ot">&lt;-</span> gal_raw <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#standardizing z</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">as.numeric</span>(.data[[z_col]]),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">ifelse</span>(<span class="fu">is.finite</span>(z) <span class="sc">&amp;</span> z <span class="sc">&gt;=</span> <span class="dv">0</span>, z, <span class="cn">NA_real_</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Redshift bins</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">z_bin =</span> <span class="fu">cut</span>(</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      z,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="cn">Inf</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"[0,1)"</span>,<span class="st">"[1,2)"</span>,<span class="st">"[2,3)"</span>,<span class="st">"[3,4)"</span>,<span class="st">"[4,6)"</span>,<span class="st">"[6,10)"</span>,<span class="st">"[10,+)"</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">right  =</span> <span class="cn">FALSE</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Let us check if missing data increases as we go higher in redshift?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mag_from_uJy <span class="ot">&lt;-</span> <span class="cf">function</span>(f) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(f))<span class="co">#if column is in character</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA_real_</span>, <span class="fu">length</span>(f))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;-</span> <span class="fu">is.finite</span>(f) <span class="sc">&amp;</span> f <span class="sc">&gt;</span> <span class="dv">0</span><span class="co">#positive fluxes</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  out[idx] <span class="ot">&lt;-</span> <span class="fl">23.9</span> <span class="sc">-</span> <span class="fl">2.5</span> <span class="sc">*</span> <span class="fu">log10</span>(f[idx])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>bands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"f150w"</span>,<span class="st">"f200w"</span>,<span class="st">"f277w"</span>,<span class="st">"f356w"</span>,<span class="st">"f360w"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>           <span class="st">"f410w"</span>,<span class="st">"f430w"</span>,<span class="st">"f444w"</span>,<span class="st">"f460w"</span>,<span class="st">"f480w"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (b <span class="cf">in</span> bands) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  fcol <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"f_"</span>, b)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  mcol <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"m_"</span>, b)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (fcol <span class="sc">%in%</span> <span class="fu">names</span>(gal) <span class="sc">&amp;&amp;</span> <span class="sc">!</span>(mcol <span class="sc">%in%</span> <span class="fu">names</span>(gal))) {</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    gal[[mcol]] <span class="ot">&lt;-</span> <span class="fu">mag_from_uJy</span>(gal[[fcol]])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Redshift bins</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>gal <span class="ot">&lt;-</span> gal <span class="sc">%&gt;%</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">z_bin =</span> <span class="fu">cut</span>(</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    z, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">10</span>, <span class="cn">Inf</span>),</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"[0,1)"</span>,<span class="st">"[1,2)"</span>,<span class="st">"[2,3)"</span>,<span class="st">"[3,4)"</span>,<span class="st">"[4,6)"</span>,<span class="st">"[6,10)"</span>,<span class="st">"[10,+)"</span>),</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">right =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>mag_cols <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">paste0</span>(<span class="st">"m_"</span>, bands), <span class="fu">names</span>(gal))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#Missing data</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr); <span class="fu">library</span>(tidyr); <span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>miss_long <span class="ot">&lt;-</span> gal <span class="sc">%&gt;%</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(z_bin, <span class="fu">across</span>(<span class="fu">all_of</span>(mag_cols), <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.finite</span>(.x), <span class="at">.names =</span> <span class="st">"NA_{col}"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>z_bin, <span class="at">names_to =</span> <span class="st">"band"</span>, <span class="at">values_to =</span> <span class="st">"is_na"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">band =</span> <span class="fu">sub</span>(<span class="st">"^NA_m_"</span>, <span class="st">""</span>, band),</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">band =</span> <span class="fu">toupper</span>(<span class="fu">sub</span>(<span class="st">"^f"</span>, <span class="st">"F"</span>, <span class="fu">sub</span>(<span class="st">"^m_"</span>, <span class="st">""</span>, band)))</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(z_bin, band) <span class="sc">%&gt;%</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">pct_missing =</span> <span class="fu">mean</span>(is_na) <span class="sc">*</span> <span class="dv">100</span>, <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(z_bin))</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>miss_hl <span class="ot">&lt;-</span> miss_long <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">is_high =</span> z_bin <span class="sc">==</span> <span class="st">"[10,+)"</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>band_labels <span class="ot">&lt;-</span> <span class="fu">toupper</span>(<span class="fu">sub</span>(<span class="st">"^f"</span>, <span class="st">"F"</span>, bands))</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(miss_hl, <span class="fu">aes</span>(band, pct_missing, <span class="at">fill =</span> is_high)) <span class="sc">+</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.7</span>), <span class="at">width =</span> <span class="fl">0.65</span>) <span class="sc">+</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> band_labels, <span class="at">drop =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"grey80"</span>, <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"steelblue"</span>),</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Other bins"</span>, <span class="st">"High-z [10,+)"</span>),</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>                    <span class="at">name =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Percent missing by band (highlighting highest-z bin)"</span>,</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Filter"</span>, <span class="at">y =</span> <span class="st">"% Missing"</span>) <span class="sc">+</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">40</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Observations:</p>
+<p>1.The blue bars show percentage of missing data at high redshift, and the grey bars show percentage of missing data at lower redshift. This fits perfectly with the astrological concept of galaxies becoming harder to observe with increasing redshift (cosmic time).</p>
+<p>2.The highlighted bars show higher missing data for the shorter wavelength JWST filters like F150W and F200W with the highest z redshift.</p>
+<p>3.For some filters there is no missing data.</p>
+<p>4.For the f277w filter, the missing data percentage is less at higher redshifts.</p>
+<p>So, how does the missing data increase or decrease with redshift?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>miss_cont <span class="ot">&lt;-</span> miss_long <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">z_mid =</span> <span class="fu">recode</span>(<span class="fu">as.character</span>(z_bin),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"[0,1)"</span> <span class="ot">=</span> <span class="fl">0.5</span>, <span class="st">"[1,2)"</span> <span class="ot">=</span> <span class="fl">1.5</span>, <span class="st">"[2,3)"</span> <span class="ot">=</span> <span class="fl">2.5</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"[3,4)"</span> <span class="ot">=</span> <span class="fl">3.5</span>, <span class="st">"[4,6)"</span> <span class="ot">=</span> <span class="dv">5</span>,   <span class="st">"[6,10)"</span> <span class="ot">=</span> <span class="dv">8</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"[10,+)"</span> <span class="ot">=</span> <span class="dv">11</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>brks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">12</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(miss_cont, <span class="fu">aes</span>(<span class="at">x =</span> z_mid, <span class="at">y =</span> pct_missing, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> band, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> brks, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">12</span>), <span class="at">minor_breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Missing data across redshift, by band"</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Redshift (z)"</span>, <span class="at">y =</span> <span class="st">"% Missing"</span>) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="dv">12</span>, <span class="st">"pt"</span>),</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">40</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text  =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Observations:</p>
+<ol type="1">
+<li><p>I can more clearly observe here that at lower values of redshift for a shorter wavelength filters (F150W and F200W), the missing data is modest. However as the redshift becomes very high (10+), these short wavelength filters, that are looking at bluer rest-frame light and is thus suppressing them. So many galaxies are not getting detected.</p></li>
+<li><p>In longer wavelength bands (F444W), the rise of missing data with redshift is minimal because longer wavelength filters are more effective and usable. As we travel to older cosmic times, the bluer wavelength filters drop out lots of undetectable points while the redder wavelength filters stay on longer.</p></li>
+</ol>
+<p>Therefore, based on the above two plots, I can conclude that the low + no impact filters are perfect for plotting/modelling.</p>
+<p>For Data Wrangling:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Standardizing redshift</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>z_candidates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"z"</span>, <span class="st">"z_phot"</span>, <span class="st">"z_best"</span>, <span class="st">"z_eazy"</span>, <span class="st">"photoz"</span>, <span class="st">"z_spec"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>z_col <span class="ot">&lt;-</span> <span class="fu">intersect</span>(z_candidates, <span class="fu">names</span>(gal_raw))[<span class="dv">1</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">is.na</span>(z_col)) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No redshift column found. Look for one of: "</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste</span>(z_candidates, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Using redshift column: "</span>, z_col)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>gal <span class="ot">&lt;-</span> gal_raw <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">as.numeric</span>(.data[[z_col]]),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">ifelse</span>(<span class="fu">is.finite</span>(z) <span class="sc">&amp;</span> z <span class="sc">&gt;=</span> <span class="dv">0</span>, z, <span class="cn">NA_real_</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">z_bin =</span> <span class="fu">cut</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      z,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="cn">Inf</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"[0,1)"</span>,<span class="st">"[1,2)"</span>,<span class="st">"[2,3)"</span>,<span class="st">"[3,4)"</span>,<span class="st">"[4,6)"</span>,<span class="st">"[6,10)"</span>,<span class="st">"[10,+)"</span>),</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">right  =</span> <span class="cn">FALSE</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Magnitude for filter bands</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>mag_from_uJy <span class="ot">&lt;-</span> <span class="cf">function</span>(f) {</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(f))</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA_real_</span>, <span class="fu">length</span>(f))</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">&lt;-</span> <span class="fu">is.finite</span>(f) <span class="sc">&amp;</span> f <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  out[idx] <span class="ot">&lt;-</span> <span class="fl">23.9</span> <span class="sc">-</span> <span class="fl">2.5</span> <span class="sc">*</span> <span class="fu">log10</span>(f[idx])</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>bands <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"f150w"</span>,<span class="st">"f200w"</span>,<span class="st">"f277w"</span>,<span class="st">"f356w"</span>,<span class="st">"f360w"</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>           <span class="st">"f410w"</span>,<span class="st">"f430w"</span>,<span class="st">"f444w"</span>,<span class="st">"f460w"</span>,<span class="st">"f480w"</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (b <span class="cf">in</span> bands) {</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  fcol <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"f_"</span>, b)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  mcol <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"m_"</span>, b)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (fcol <span class="sc">%in%</span> <span class="fu">names</span>(gal) <span class="sc">&amp;&amp;</span> <span class="sc">!</span>(mcol <span class="sc">%in%</span> <span class="fu">names</span>(gal))) {</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    gal[[mcol]] <span class="ot">&lt;-</span> <span class="fu">mag_from_uJy</span>(gal[[fcol]])</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>mag_cols <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">paste0</span>(<span class="st">"m_"</span>, bands), <span class="fu">names</span>(gal))</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#Choosing the optimal filters from missing data analysis</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>safe_filters_target <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"F277W"</span>, <span class="st">"F356W"</span>, <span class="st">"F444W"</span>, <span class="st">"F480W"</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#Column check</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>candidate_safe_mag_cols <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"m_"</span>, <span class="fu">tolower</span>(safe_filters_target))</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>safe_mag_cols <span class="ot">&lt;-</span> <span class="fu">intersect</span>(candidate_safe_mag_cols, <span class="fu">names</span>(gal))</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(safe_mag_cols) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"None of the target safe filters are present as magnitude columns:"</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste</span>(safe_filters_target, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>safe_filters <span class="ot">&lt;-</span> <span class="fu">toupper</span>(<span class="fu">sub</span>(<span class="st">"^m_f"</span>, <span class="st">"F"</span>, safe_mag_cols))</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Using safe filters: "</span>, <span class="fu">paste</span>(safe_filters, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="co">#Clean analysis df</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>gal_clean <span class="ot">&lt;-</span> gal <span class="sc">%&gt;%</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_safe   =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">all_of</span>(safe_mag_cols), <span class="sc">~</span> <span class="fu">is.finite</span>(.))),</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">has_safe =</span> n_safe <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(has_safe, <span class="sc">!</span><span class="fu">is.na</span>(z))</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>gal_clean <span class="ot">&lt;-</span> gal_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">C1_F277_F356 =</span> m_f277w <span class="sc">-</span> m_f356w,</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">C2_F356_F444 =</span> m_f356w <span class="sc">-</span> m_f444w</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="co">#Long format magnitudes</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>gal_long_mag <span class="ot">&lt;-</span> gal_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"tile"</span>, <span class="st">"class"</span>)), z, z_bin, <span class="fu">all_of</span>(safe_mag_cols)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols      =</span> <span class="fu">all_of</span>(safe_mag_cols),</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to  =</span> <span class="st">"band_raw"</span>,</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"mag"</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">band =</span> <span class="fu">toupper</span>(<span class="fu">sub</span>(<span class="st">"^m_f"</span>, <span class="st">"F"</span>, band_raw))</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a><span class="co">#Visible output</span></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>wrangle_summary <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>  <span class="at">stage  =</span> <span class="fu">c</span>(<span class="st">"Raw catalog"</span>, <span class="st">"After z + mags"</span>, <span class="st">"After safe-filter &amp; z filter"</span>),</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_rows =</span> <span class="fu">c</span>(<span class="fu">nrow</span>(gal_raw), <span class="fu">nrow</span>(gal), <span class="fu">nrow</span>(gal_clean))</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>  wrangle_summary,</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Row counts at each data-wrangling stage"</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Row counts at each data-wrangling stage</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">stage</th>
+<th style="text-align: right;">n_rows</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Raw catalog</td>
+<td style="text-align: right;">74020</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">After z + mags</td>
+<td style="text-align: right;">74020</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">After safe-filter &amp; z filter</td>
+<td style="text-align: right;">71256</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>safe_filter_tbl <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">safe_filters   =</span> <span class="fu">paste</span>(safe_filters, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_safe_filters =</span> <span class="fu">length</span>(safe_filters)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  safe_filter_tbl,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Safe / low-missing filters available in this catalog"</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Safe / low-missing filters available in this catalog</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">safe_filters</th>
+<th style="text-align: right;">n_safe_filters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">F277W, F356W, F444W</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Glimpse of the cleaned table for the used filters</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>gal_clean <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(z, z_bin, <span class="fu">all_of</span>(safe_mag_cols)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 5
+      z z_bin  m_f277w m_f356w m_f444w
+  &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1 0.982 [0,1)     24.5    24.1    24.0
+2 1.86  [1,2)     24.8    24.8    24.9
+3 5.15  [4,6)     24.6    25.4    25.2
+4 0.173 [0,1)     23.6    23.5    23.7
+5 5.66  [4,6)     25.2    24.2    24.7
+6 6.59  [6,10)    24.0    23.5    24.0
+7 2.30  [2,3)     22.7    22.6    22.5
+8 0.427 [0,1)     22.7    22.9    23.1</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"data/clean"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">gal_clean     =</span> gal_clean,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">gal_long_mag  =</span> gal_long_mag,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">safe_mag_cols =</span> safe_mag_cols</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/clean/gal_clean.rds"</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 
 </section>
@@ -600,7 +1018,7 @@ ul.task-list li input[type="checkbox"] {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

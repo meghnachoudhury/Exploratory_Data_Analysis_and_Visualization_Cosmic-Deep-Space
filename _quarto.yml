@@ -8,11 +8,10 @@ execute:
   message: false
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "Exploratory Data Analysis and Visualization of JWST Photometric Data in the Cosmic Deep Space"
   author:
-    - AUTHOR1 (UNI1)
-    - AUTHOR2 (UNI2)
-  repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
+    - MEGHNA CHOUDHURY (MC5866)
+  repo-url: https://github.com/meghnachoudhury/Exploratory_Data_Analysis_and_Visualization_Cosmic-Deep-Space
   date: today
   page-footer:
     right: |

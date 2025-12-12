@@ -1,1 +1,12 @@
 # Conclusion
+Overall, I would conclude from this experiment on the JWST photometric data that from our brightness analysis, the magnitude stays stable. But at higher redshift, only the brightest sources stay detectable. This may indicate a survey limit. From a visualization perspective, color trend does not show a redder with time trend, which means there is more survey bias rather than actual cosmic evolution. The spatial choropleths further strengthen the point that the survey itself is non uniform. The logistic regression, highly concludes that the star galaxy identification is highly driven by brightness and size.
+
+RESOURCES:
+
+1.  <https://jwst-uncover.github.io/DR3.html>
+2.  <https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html>
+3.  Idea derived from <https://medium.com/cosmic-cartography/data-visualization-of-the-observable-universe-5e4a5af2330>
+4.  Chatgpt for R
+5.  Astropy hdu=1 for converting fits file to csv and ecsv.
+6.  <https://pixedfit.readthedocs.io/en/latest/list_kernels_psf.html>
+7.  https://science.nasa.gov/asset/webb/pandoras-cluster-nircam-image/
